@@ -49,7 +49,7 @@ const Home = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:5000/auth', {
+      const response = await fetch('http://192.168.8.41:5000/auth', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
