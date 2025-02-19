@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Wifi, WifiOff, Loader2, Globe } from 'lucide-react';
 
 const StatusMessage = ({ type, message, internetAccess }) => {
@@ -39,8 +39,32 @@ const Home = () => {
     message: '',
     internetAccess: false
   });
+  const [urlParams, setUrlParams] = useState(null);
+
+  useEffect(() => {
+    // Parse URL parameters when component mounts
+    const searchParams = new URLSearchParams(window.location.search);
+    const params = {
+      ap: searchParams.get('ap'),
+      id: searchParams.get('id'),
+      t: searchParams.get('t'),
+      url: searchParams.get('url'),
+      ssid: searchParams.get('ssid')
+    };
+    setUrlParams(params);
+  }, []);
 
   const authenticateUser = async () => {
+    if (!urlParams?.id) {
+      setStatus({
+        loading: false,
+        type: 'error',
+        message: 'Client MAC address not found in URL parameters',
+        internetAccess: false
+      });
+      return;
+    }
+
     setStatus({ 
       loading: true, 
       type: null, 
@@ -50,18 +74,24 @@ const Home = () => {
 
     try {
       const response = await fetch('/auth', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          clientMac: urlParams.id,
+          apMac: urlParams.ap,
+          timestamp: urlParams.t,
+          redirectUrl: urlParams.url,
+          ssid: urlParams.ssid
+        })
       });
 
       const data = await response.json();
-       console.log(data)
+      
       if (!response.ok) {
         let errorMessage = 'Authentication failed. Please try again.';
         
-        // Handle specific error cases
         if (response.status === 404) {
           errorMessage = 'No device found. Please check your connection.';
         }
@@ -79,7 +109,7 @@ const Home = () => {
         setStatus({
           loading: false,
           type: 'success',
-          message: `Connected successfully! MAC: ${data.mac}`,
+          message: `Connected successfully! MAC: ${urlParams.id}`,
           internetAccess: data.internetAccess
         });
       } else {
@@ -116,7 +146,7 @@ const Home = () => {
           <div className="mt-8 space-y-4">
             <button
               onClick={authenticateUser}
-              disabled={status.loading}
+              disabled={status.loading || !urlParams?.id}
               className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {status.loading ? (
