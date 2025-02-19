@@ -49,7 +49,7 @@ const Home = () => {
     });
 
     try {
-      const response = await fetch('/auth', {
+      const response = await fetch('http://192.168.8.41:5000/auth', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const Home = () => {
       });
 
       const data = await response.json();
-
+       console.log(data)
       if (!response.ok) {
         let errorMessage = 'Authentication failed. Please try again.';
         
