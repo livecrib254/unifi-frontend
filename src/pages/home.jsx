@@ -159,9 +159,14 @@ const Home = () => {
         setStatus({
           loading: false,
           type: 'success',
-          message: `Connected successfully for ${selectedDuration} minutes! MAC: ${urlParams.id}`,
+          message: `Connected successfully! Redirecting to Fedi.xyz...`,
           internetAccess: data.internetAccess
         });
+        
+        // Wait 2 seconds before redirecting to show the success message
+        setTimeout(() => {
+          window.location.href = 'https://www.fedi.xyz/';
+        }, 2000);
       } else {
         setStatus({
           loading: false,
