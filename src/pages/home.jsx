@@ -165,7 +165,24 @@ const Home = () => {
         
         // Wait 2 seconds before redirecting to show the success message
         setTimeout(() => {
-          window.location.href = 'https://www.fedi.xyz/';
+          // Chrome intent format for Android
+          const chromeIntent = 'intent://www.fedi.xyz/#Intent;scheme=https;package=com.android.chrome;end';
+          
+          // Try to detect if it's an Android device
+          const isAndroid = /Android/i.test(navigator.userAgent);
+          
+          if (isAndroid) {
+            // Try Chrome intent first
+            window.location.href = chromeIntent;
+            
+            // Fallback to regular URL after a short delay if Chrome intent fails
+            setTimeout(() => {
+              window.location.href = 'https://www.fedi.xyz/';
+            }, 1000);
+          } else {
+            // For non-Android devices, use regular URL
+            window.location.href = 'https://www.fedi.xyz/';
+          }
         }, 2000);
       } else {
         setStatus({
