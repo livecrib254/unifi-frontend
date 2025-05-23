@@ -211,6 +211,7 @@ const Home = () => {
         setTimeout(() => {
           setShowModal(false);
           authenticateUser();
+          setProcessingPayment(false);
         }, 3000);
       } else {
         throw new Error("Payment failed or canceled.");
@@ -218,8 +219,6 @@ const Home = () => {
     } catch (err) {
       setStatus({ type: "error", message: err.message, internetAccess: false });
       setShowModal(false);
-    } finally {
-      setProcessingPayment(false);
     }
   };
 
