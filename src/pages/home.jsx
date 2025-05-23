@@ -3,11 +3,56 @@ import { Wifi, WifiOff, Loader2, Globe, Clock, Database } from "lucide-react";
 import { Dialog, Transition } from "@headlessui/react";
 
 const durationOptions = [
-  { value: 10, label: "10 Minutes", description: "Quick access", price: 5 },
-  { value: 20, label: "20 Minutes", description: "Short session", price: 10 },
-  { value: 30, label: "30 Minutes", description: "Regular session", price: 15 },
-  { value: 60, label: "1 Hour", description: "Extended access", price: 25 },
+  {
+    value: 10,
+    label: "10 Minutes",
+    description: "Quick access",
+    price: 5,
+    expire_number: 10,
+    expire_unit: 1 // 10 minutes
+  },
+  {
+    value: 20,
+    label: "20 Minutes",
+    description: "Short session",
+    price: 10,
+    expire_number: 20,
+    expire_unit: 1 // 20 minutes
+  },
+  {
+    value: 30,
+    label: "30 Minutes",
+    description: "Regular session",
+    price: 15,
+    expire_number: 30,
+    expire_unit: 1 // 30 minutes
+  },
+  {
+    value: 60,
+    label: "1 Hour",
+    description: "Extended access",
+    price: 25,
+    expire_number: 60,
+    expire_unit: 1 // 1 hour = 60 minutes
+  },
+  {
+    value: 720,
+    label: "12 Hours",
+    description: "Half-day access",
+    price: 50,
+    expire_number: 720,
+    expire_unit: 1 // 12 hours = 720 minutes
+  },
+  {
+    value: 1440,
+    label: "24 Hours",
+    description: "Full-day access",
+    price: 80,
+    expire_number: 1440,
+    expire_unit: 1 // 24 hours = 1440 minutes
+  }
 ];
+
 
 const dataOptions = [
   { value: 20, label: "20MB", description: "Light usage", price: 5 },
@@ -136,11 +181,26 @@ const Home = () => {
       message: "Authenticating...",
       internetAccess: false,
     });
-
+  
     try {
-      const duration = tab === "duration" ? selectedDuration : null;
-      const dataBundle = tab === "data" ? selectedData : null;
-
+      let duration = null;
+      let expire_number = null;
+      let expire_unit = null;
+      let data = null;
+  
+      if (tab === "duration") {
+        duration = selectedDuration;
+        const selected = durationOptions.find(opt => opt.value === selectedDuration);
+        if (selected) {
+          expire_number = selected.expire_number;
+          expire_unit = selected.expire_unit;
+        }
+      }
+  
+      if (tab === "data") {
+        data = selectedData; // just the data value, no expiry
+      }
+  
       const response = await fetch("/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -151,26 +211,27 @@ const Home = () => {
           redirectUrl: urlParams.url,
           ssid: urlParams.ssid,
           duration,
-          data : dataBundle,
+          data,
+          expire_number,
+          expire_unit,
         }),
       });
-
-      const data = await response.json();
-      console.log(data)
-
-      if (data.success) {
+  
+      const result = await response.json();
+      console.log(result);
+  
+      if (result.success) {
         setStatus({
           loading: false,
           type: "success",
           message: "Connected successfully! Redirecting...",
-          internetAccess: data.internetAccess,
+          internetAccess: result.internetAccess,
         });
-        setTimeout(
-          () => (window.location.href = "https://www.fedi.xyz/"),
-          2000
-        );
+        setTimeout(() => {
+          window.location.href = "https://www.fedi.xyz/";
+        }, 2000);
       } else {
-        throw new Error(data.message || "Authentication failed");
+        throw new Error(result.message || "Authentication failed");
       }
     } catch (err) {
       setStatus({
@@ -181,6 +242,7 @@ const Home = () => {
       });
     }
   };
+  
 
   const selectedOption =
     tab === "duration"
