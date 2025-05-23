@@ -191,7 +191,7 @@ const Home = () => {
     console.log(tab);
     setProcessingPayment(true);
     try {
-      const response = await fetch("/auth/simulate-payment", {
+      const response = await fetch("/simulate-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
