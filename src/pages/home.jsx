@@ -232,6 +232,11 @@ const Home = () => {
               Choose your preferred package and pay via M-Pesa
             </p>
           </div>
+          <StatusMessage
+            type={status.type}
+            message={status.message}
+            internetAccess={status.internetAccess}
+          />
 
           <div className="mt-6 flex justify-center gap-4">
             <button
@@ -283,11 +288,7 @@ const Home = () => {
             <span>Pay with M-Pesa</span>
           </button>
 
-          <StatusMessage
-            type={status.type}
-            message={status.message}
-            internetAccess={status.internetAccess}
-          />
+      
         </div>
       </div>
 
