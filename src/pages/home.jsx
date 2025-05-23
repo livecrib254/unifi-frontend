@@ -10,6 +10,8 @@ const durationOptions = [
 ];
 
 const dataOptions = [
+  { value: 20, label: "20MB", description: "Light usage", price: 5 },
+  { value: 50, label: "50MB", description: "Light usage", price: 5 },
   { value: 100, label: "100MB", description: "Light usage", price: 5 },
   { value: 250, label: "250MB", description: "Moderate browsing", price: 10 },
   { value: 500, label: "500MB", description: "Heavy usage", price: 20 },
@@ -104,7 +106,7 @@ const Home = () => {
   const [urlParams, setUrlParams] = useState(null);
   const [tab, setTab] = useState("duration");
   const [selectedDuration, setSelectedDuration] = useState(10);
-  const [selectedData, setSelectedData] = useState(100);
+  const [selectedData, setSelectedData] = useState(20);
   const [showModal, setShowModal] = useState(false);
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -189,7 +191,7 @@ const Home = () => {
     console.log(tab);
     setProcessingPayment(true);
     try {
-      const response = await fetch("/simulate-payment", {
+      const response = await fetch("/auth/simulate-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
