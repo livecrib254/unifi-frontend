@@ -3,9 +3,9 @@ import { Wifi, CheckCircle, Globe, Shield, Zap, Clock, Database, ExternalLink } 
 import { useStore } from "../store/store";
 
 export default function WifiSuccessPage() {
-const { activeDuration, activeDataplan, activeTab } = useStore();
+const { activeDuration,  activeDataPlan, activeTab } = useStore();
   const [isConnected, setIsConnected] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(false); 
   const [sessionInfo, setSessionInfo] = useState(null);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const { activeDuration, activeDataplan, activeTab } = useStore();
                   Bundle
                 </span>}
                  
-                  <span className="text-white font-medium">{activeTab === "duration"? activeDuration: activeDataplan}</span>
+                  <span className="text-white font-medium">{activeTab === "duration"? activeDuration:  activeDataPlan}</span>
                 </div>
               )}
               {sessionInfo?.data !== 'Unlimited' && (
