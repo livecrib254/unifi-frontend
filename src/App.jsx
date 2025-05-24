@@ -9,7 +9,20 @@ import ErrorPage from './pages/error'
 
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> }, { path: "/success", element: <WifiSuccessPage /> },])
+  {
+    path: "/guest/s/:token",
+    element: <Home />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/success",
+    element: <WifiSuccessPage />,
+  },
+  {
+    path: "*", // Catch-all for unmatched routes
+    element: <ErrorPage />,
+  }
+]);
 
   function App() {
     return <RouterProvider router={router} />;
