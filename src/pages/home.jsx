@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Wifi, WifiOff, Loader2, Globe, Clock, Database } from "lucide-react";
 import { useStore } from "../store/store";
+import { useNavigate } from "react-router-dom";
+
 
 
 const durationOptions = [
@@ -158,6 +160,7 @@ const OptionSelector = ({
 
 const Home = () => {
   const { updateActiveDuration, updateActiveDataplan, updateActiveTab } = useStore();
+  const navigate = useNavigate();
   const [status, setStatus] = useState({
     loading: false,
     type: null,
@@ -246,7 +249,7 @@ const Home = () => {
           internetAccess: result.internetAccess,
         });
         setTimeout(() => {
-          window.location.href = "https://www.fedi.xyz/";
+          navigate("/success");
         }, 2000);
       } else {
         throw new Error(result.message || "Authentication failed");
