@@ -15,7 +15,7 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
       package: urlParams.get('package') || 'Premium Access',
       duration: urlParams.get('duration') || '60 minutes',
       data: urlParams.get('data') || 'Unlimited',
-      network: urlParams.get('ssid') || 'GuestNetwork'
+      network: urlParams.get('ssid') || 'Design WIFI'
     };
     setSessionInfo(sessionData);
 
