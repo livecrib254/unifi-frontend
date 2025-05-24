@@ -172,9 +172,12 @@ const Home = () => {
   const [selectedDuration, setSelectedDuration] = useState(10);
   const [selectedData, setSelectedData] = useState(20);
   const [showModal, setShowModal] = useState(false);
+  const [time, setTime] = useState();
+  const [data, setData] = useState();
+
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-
+   console.log(selectedData, selectedDuration)
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const params = {
@@ -192,6 +195,12 @@ const Home = () => {
         internetAccess: false,
       });
   }, []);
+
+  useEffect(()=>{
+    setTime(durationOptions.find(option => option.value === selectedDuration)?.label)
+    setData(dataOptions.find(option => option.value === selectedData)?.label)
+
+  },[selectedData, selectedDuration])
 
   const authenticateUser = async () => {
     setStatus({
@@ -291,8 +300,8 @@ const Home = () => {
       if (result.success) {
         setTimeout(() => {
           updateActiveTab(tab)
-          updateActiveDataplan(selectedData)
-          updateActiveDuration(selectedDuration)
+          updateActiveDataplan(data)
+          updateActiveDuration(time)
           setShowModal(false);
           authenticateUser();
           setProcessingPayment(false);
