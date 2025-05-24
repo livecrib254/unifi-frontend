@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Wifi, WifiOff, Loader2, Globe, Clock, Database } from "lucide-react";
 import { useStore } from "../store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 
 
