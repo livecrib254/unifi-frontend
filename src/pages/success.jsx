@@ -1,71 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { Wifi, CheckCircle, Globe, Shield, Zap, Clock, Database, ExternalLink } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Wifi,
+  CheckCircle,
+  Globe,
+  Shield,
+  Zap,
+  Clock,
+  Database,
+  ExternalLink,
+} from "lucide-react";
 import { useStore } from "../store/store";
 
 export default function WifiSuccessPage() {
-const { activeDuration,  activeDataPlan, activeTab } = useStore();
+  const { activeDuration, activeDataPlan, activeTab } = useStore();
   const [isConnected, setIsConnected] = useState(false);
-  const [showFeatures, setShowFeatures] = useState(false); 
+  const [showFeatures, setShowFeatures] = useState(false);
   const [sessionInfo, setSessionInfo] = useState(null);
 
   useEffect(() => {
     // Get session info from URL params or local storage
     const urlParams = new URLSearchParams(window.location.search);
     const sessionData = {
-      package: urlParams.get('package') || 'Premium Access',
-      duration: urlParams.get('duration') || '60 minutes',
-      data: urlParams.get('data') || 'Unlimited',
-      network: urlParams.get('ssid') || 'Design WIFI'
+      package: urlParams.get("package") || "Premium Access",
+      duration: urlParams.get("duration") || "60 minutes",
+      data: urlParams.get("data") || "Unlimited",
+      network: urlParams.get("ssid") || "Design WIFI",
     };
     setSessionInfo(sessionData);
 
     // Animate connection success
     const timer1 = setTimeout(() => setIsConnected(true), 500);
     const timer2 = setTimeout(() => setShowFeatures(true), 1200);
-    
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
   }, []);
 
-
   const handleStartBrowsing = () => {
-
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  
-    // iOS detection
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-      window.location.href = 'https://apps.apple.com/app/id284882215';
-    }
-    // Android detection
-    else if (/android/i.test(userAgent)) {
-      window.location.href = 'https://play.google.com/store/apps/details?id=com.facebook.katana'
-    }
-    // Desktop or other devices
-    else {
-        // Open Google in a new tab
-        window.open('https://www.google.com/', '_blank');
-    }
-  
+    window.open("https://www.google.com/", "_blank");
   };
 
   const features = [
     {
       icon: <Shield className="w-6 h-6" />,
-      title: 'Secure Connection',
-      description: 'Your connection is protected with enterprise-grade security'
+      title: "Secure Connection",
+      description:
+        "Your connection is protected with enterprise-grade security",
     },
     {
       icon: <Zap className="w-6 h-6" />,
-      title: 'High-Speed Internet',
-      description: 'Enjoy blazing fast speeds for all your browsing needs'
+      title: "High-Speed Internet",
+      description: "Enjoy blazing fast speeds for all your browsing needs",
     },
     {
       icon: <Globe className="w-6 h-6" />,
-      title: 'Global Access',
-      description: 'Access websites and services from around the world'
-    }
+      title: "Global Access",
+      description: "Access websites and services from around the world",
+    },
   ];
 
   return (
@@ -87,7 +80,7 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
+              animationDuration: `${2 + Math.random() * 2}s`,
             }}
           ></div>
         ))}
@@ -99,22 +92,44 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
           <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 border border-white/20 shadow-2xl text-center transform hover:scale-105 transition-all duration-500">
             {/* WiFi Icon with pulse animation */}
             <div className="relative mb-6">
-              <div className={`w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center transform transition-all duration-1000 ${isConnected ? 'scale-100 rotate-0' : 'scale-50 rotate-180'}`}>
+              <div
+                className={`w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center transform transition-all duration-1000 ${
+                  isConnected ? "scale-100 rotate-0" : "scale-50 rotate-180"
+                }`}
+              >
                 <Wifi className="w-12 h-12 text-white" />
               </div>
-              
+
               {/* Success checkmark overlay */}
-              <div className={`absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center transform transition-all duration-500 ${isConnected ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}`}>
+              <div
+                className={`absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center transform transition-all duration-500 ${
+                  isConnected ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                }`}
+              >
                 <CheckCircle className="w-5 h-5 text-white" />
               </div>
-              
+
               {/* Pulse rings */}
-              <div className={`absolute inset-0 rounded-full border-4 border-green-400/50 animate-ping ${isConnected ? 'opacity-100' : 'opacity-0'}`}></div>
-              <div className={`absolute inset-2 rounded-full border-4 border-green-400/30 animate-ping delay-200 ${isConnected ? 'opacity-100' : 'opacity-0'}`}></div>
+              <div
+                className={`absolute inset-0 rounded-full border-4 border-green-400/50 animate-ping ${
+                  isConnected ? "opacity-100" : "opacity-0"
+                }`}
+              ></div>
+              <div
+                className={`absolute inset-2 rounded-full border-4 border-green-400/30 animate-ping delay-200 ${
+                  isConnected ? "opacity-100" : "opacity-0"
+                }`}
+              ></div>
             </div>
-            
+
             {/* Success message */}
-            <div className={`transform transition-all duration-1000 ${isConnected ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+            <div
+              className={`transform transition-all duration-1000 ${
+                isConnected
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              }`}
+            >
               <h1 className="text-3xl font-bold text-white mb-2 bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
                 Connected Successfully!
               </h1>
@@ -124,37 +139,53 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
             </div>
 
             {/* Connection details */}
-            <div className={`bg-white/5 rounded-2xl p-4 mb-6 border border-white/10 transform transition-all duration-1000 delay-300 ${isConnected ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+            <div
+              className={`bg-white/5 rounded-2xl p-4 mb-6 border border-white/10 transform transition-all duration-1000 delay-300 ${
+                isConnected
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              }`}
+            >
               <div className="flex justify-between items-center text-sm mb-2">
                 <span className="text-white/60">Network</span>
-                <span className="text-white font-medium">{sessionInfo?.network}</span>
+                <span className="text-white font-medium">
+                  {sessionInfo?.network}
+                </span>
               </div>
               <div className="flex justify-between items-center text-sm mb-2">
                 <span className="text-white/60">Package</span>
-                <span className="text-white font-medium">{activeTab === "duration"? "Timed Session": "Data Bundle"}</span>
+                <span className="text-white font-medium">
+                  {activeTab === "duration" ? "Timed Session" : "Data Bundle"}
+                </span>
               </div>
-              {sessionInfo?.duration !== 'Unlimited' && (
+              {sessionInfo?.duration !== "Unlimited" && (
                 <div className="flex justify-between items-center text-sm mb-2">
-                {activeTab === "duration"?  <span className="text-white/60 flex items-center">
-                  
-                  <Clock className="w-3 h-3 mr-1" />
-                  Duration
-                </span>:  <span className="text-white/60 flex items-center">
-                  
-                  <Database className="w-3 h-3 mr-1" />
-                  Bundle
-                </span>}
-                 
-                  <span className="text-white font-medium">{activeTab === "duration"? activeDuration:  activeDataPlan}</span>
+                  {activeTab === "duration" ? (
+                    <span className="text-white/60 flex items-center">
+                      <Clock className="w-3 h-3 mr-1" />
+                      Duration
+                    </span>
+                  ) : (
+                    <span className="text-white/60 flex items-center">
+                      <Database className="w-3 h-3 mr-1" />
+                      Bundle
+                    </span>
+                  )}
+
+                  <span className="text-white font-medium">
+                    {activeTab === "duration" ? activeDuration : activeDataPlan}
+                  </span>
                 </div>
               )}
-              {sessionInfo?.data !== 'Unlimited' && (
+              {sessionInfo?.data !== "Unlimited" && (
                 <div className="flex justify-between items-center text-sm mb-2">
                   <span className="text-white/60 flex items-center">
                     <Database className="w-3 h-3 mr-1" />
                     Data
                   </span>
-                  <span className="text-white font-medium">{sessionInfo?.data}MB</span>
+                  <span className="text-white font-medium">
+                    {sessionInfo?.data}MB
+                  </span>
                 </div>
               )}
               <div className="flex justify-between items-center text-sm">
@@ -167,9 +198,13 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
             </div>
 
             {/* Start browsing button */}
-            <button 
+            <button
               onClick={handleStartBrowsing}
-              className={`w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 ${isConnected ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+              className={`w-full bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 ${
+                isConnected
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-4 opacity-0"
+              }`}
             >
               <ExternalLink className="w-5 h-5" />
               Start Browsing
@@ -177,7 +212,13 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
           </div>
 
           {/* Feature cards */}
-          <div className={`mt-8 space-y-4 transform transition-all duration-1000 delay-700 ${showFeatures ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <div
+            className={`mt-8 space-y-4 transform transition-all duration-1000 delay-700 ${
+              showFeatures
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }`}
+          >
             {features.map((feature, index) => (
               <div
                 key={index}
@@ -189,8 +230,12 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
                     {feature.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-white font-semibold text-sm">{feature.title}</h3>
-                    <p className="text-white/60 text-xs mt-1">{feature.description}</p>
+                    <h3 className="text-white font-semibold text-sm">
+                      {feature.title}
+                    </h3>
+                    <p className="text-white/60 text-xs mt-1">
+                      {feature.description}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -198,7 +243,13 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
           </div>
 
           {/* Footer message */}
-          <div className={`text-center mt-8 transform transition-all duration-1000 delay-1000 ${showFeatures ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+          <div
+            className={`text-center mt-8 transform transition-all duration-1000 delay-1000 ${
+              showFeatures
+                ? "translate-y-0 opacity-100"
+                : "translate-y-4 opacity-0"
+            }`}
+          >
             <p className="text-white/50 text-sm">
               Enjoy your browsing experience! 🚀
             </p>
