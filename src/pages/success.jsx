@@ -31,8 +31,23 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
 
 
   const handleStartBrowsing = () => {
-    // Open Google in a new tab
-    window.open('https://www.google.com/');
+
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+    // iOS detection
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      window.location.href = 'https://apps.apple.com/app/id284882215';
+    }
+    // Android detection
+    else if (/android/i.test(userAgent)) {
+      window.location.href = 'https://play.google.com/store/apps/details?id=com.facebook.katana'
+    }
+    // Desktop or other devices
+    else {
+        // Open Google in a new tab
+        window.open('https://www.google.com/', '_blank');
+    }
+  
   };
 
   const features = [
