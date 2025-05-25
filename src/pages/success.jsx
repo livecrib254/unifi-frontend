@@ -29,11 +29,10 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
     };
   }, []);
 
+  
   const handleStartBrowsing = () => {
-    // Redirect to the original URL or a default site
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectUrl = urlParams.get('url') || 'https:/www.google.com/';
-    window.location.href = redirectUrl;
+    // Open Google in a new tab
+    window.open('https://www.google.com/', '_blank');
   };
 
   const features = [

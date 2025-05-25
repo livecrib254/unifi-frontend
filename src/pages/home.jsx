@@ -457,15 +457,15 @@ const Home = () => {
             </h2>
 
             <div className="bg-white/10 rounded-2xl p-4 mb-6 border border-white/20">
-              <p className="text-sm text-white/80 mb-2">
+              <p className="text-md text-white/80 mb-2">
                 Package:{" "}
-                <span className="font-semibold text-white">
+                <span className="text-lg font-semibold text-white">
                   {selectedOption.label}
                 </span>
               </p>
-              <p className="text-sm text-white/80">
+              <p className="text-md text-white/80">
                 Cost:{" "}
-                <span className="font-semibold text-green-300">
+                <span className="text-lg font-bold text-green-300">
                   KES {selectedOption.price}
                 </span>
               </p>
