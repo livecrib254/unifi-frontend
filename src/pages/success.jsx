@@ -39,7 +39,7 @@ export default function WifiSuccessPage() {
   }, []);
 
   const handleStartBrowsing = () => {
-    window.open("https://www.google.com/", "_blank");
+    window.open("https://www.google.com/");
   };
 
   const features = [
