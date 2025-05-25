@@ -306,11 +306,7 @@ const Home = () => {
           setShowModal(false);
           authenticateUser();
           setProcessingPayment(false);
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-          });
+        
         }, 3000);
       } else {
         throw new Error("Payment failed or canceled.");
@@ -362,12 +358,7 @@ const Home = () => {
               </p>
             </div>
 
-            <StatusMessage
-              type={status.type}
-              message={status.message}
-              internetAccess={status.internetAccess}
-            />
-
+          
             {/* Tab buttons */}
             <div className="mt-8 flex justify-center gap-4">
               <button
@@ -393,6 +384,13 @@ const Home = () => {
                 Data Bundles
               </button>
             </div>
+
+            <StatusMessage
+              type={status.type}
+              message={status.message}
+              internetAccess={status.internetAccess}
+            />
+
 
             {/* Options grid */}
             <div className="mt-8">
