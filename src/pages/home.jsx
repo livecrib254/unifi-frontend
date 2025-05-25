@@ -177,7 +177,8 @@ const Home = () => {
 
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-   console.log(selectedData, selectedDuration)
+   
+  
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const params = {
@@ -305,6 +306,11 @@ const Home = () => {
           setShowModal(false);
           authenticateUser();
           setProcessingPayment(false);
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
         }, 3000);
       } else {
         throw new Error("Payment failed or canceled.");
