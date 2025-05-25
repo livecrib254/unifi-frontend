@@ -29,10 +29,10 @@ const { activeDuration,  activeDataPlan, activeTab } = useStore();
     };
   }, []);
 
-  
+
   const handleStartBrowsing = () => {
     // Open Google in a new tab
-    window.open('https://www.google.com/', '_blank');
+    window.open('https://www.google.com/');
   };
 
   const features = [
