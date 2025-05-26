@@ -3,8 +3,6 @@ import { Wifi, WifiOff, Loader2, Globe, Clock, Database } from "lucide-react";
 import { useStore } from "../store/store";
 import { useNavigate } from "react-router";
 
-
-
 const durationOptions = [
   {
     value: 10,
@@ -64,6 +62,29 @@ const dataOptions = [
   { value: 500, label: "500MB", description: "Heavy usage", price: 20 },
   { value: 1000, label: "1GB", description: "Full access", price: 30 },
 ];
+
+// Internet Status Icon Component
+const InternetStatusIcon = ({ isOnline }) => (
+  <div className="fixed top-4 right-4 z-40">
+    <div className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
+      isOnline 
+        ? "bg-green-500/20 border-green-400/50 text-green-200" 
+        : "bg-red-500/20 border-red-400/50 text-red-200"
+    }`}>
+      {isOnline ? (
+        <>
+          <Wifi className="h-4 w-4" />
+          <span className="text-sm font-medium hidden sm:inline">Online</span>
+        </>
+      ) : (
+        <>
+          <WifiOff className="h-4 w-4" />
+          <span className="text-sm font-medium hidden sm:inline">Offline</span>
+        </>
+      )}
+    </div>
+  </div>
+);
 
 // Updated StatusMessage component
 const StatusMessage = ({ type, message, internetAccess }) => {
@@ -174,10 +195,23 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [time, setTime] = useState();
   const [data, setData] = useState();
-
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-   
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  // Monitor internet connection status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -319,6 +353,8 @@ const Home = () => {
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-scroll">
+     
+
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -347,6 +383,8 @@ const Home = () => {
           <div className="p-6 sm:p-8">
             {/* Header section */}
             <div className="text-center mb-8">
+               {/* Internet Status Icon */}
+      <InternetStatusIcon isOnline={isOnline} />
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                 <Wifi className="w-10 h-10 text-white" />
               </div>
