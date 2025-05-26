@@ -66,13 +66,11 @@ const dataOptions = [
 // Internet Status Icon Component
 const InternetStatusIcon = ({ isOnline }) => (
   <div className="fixed top-4 right-4 z-40">
-    <div
-      className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
-       isOnline
-          ? "bg-green-500/20 border-green-400/50 text-green-200"
-          : "bg-red-500/20 border-red-400/50 text-red-200"
-      }`}
-    >
+    <div className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
+      isOnline 
+        ? "bg-green-500/20 border-green-400/50 text-green-200" 
+        : "bg-red-500/20 border-red-400/50 text-red-200"
+    }`}>
       {isOnline ? (
         <>
           <Wifi className="h-4 w-4" />
@@ -182,8 +180,7 @@ const OptionSelector = ({
 );
 
 const Home = () => {
-  const { updateActiveDuration, updateActiveDataplan, updateActiveTab } =
-    useStore();
+  const { updateActiveDuration, updateActiveDataplan, updateActiveTab } = useStore();
   const navigate = useNavigate();
   const [status, setStatus] = useState({
     loading: false,
@@ -200,21 +197,35 @@ const Home = () => {
   const [data, setData] = useState();
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(false);
+
+  // Check internet connection by pinging Google
+  const checkInternetConnection = async () => {
+    try {
+      const response = await fetch('https://www.google.com/favicon.ico', {
+        method: 'HEAD',
+        mode: 'no-cors',
+        cache: 'no-cache'
+      });
+      setIsOnline(true);
+    } catch (error) {
+      setIsOnline(false);
+    }
+  };
+
   // Monitor internet connection status
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
+    // Initial check
+    checkInternetConnection();
+    
+    // Set up interval to check every 30 seconds
+    const intervalId = setInterval(checkInternetConnection, 30000);
 
     return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
+      clearInterval(intervalId);
     };
   }, []);
-
+  
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const params = {
@@ -233,12 +244,11 @@ const Home = () => {
       });
   }, []);
 
-  useEffect(() => {
-    setTime(
-      durationOptions.find((option) => option.value === selectedDuration)?.label
-    );
-    setData(dataOptions.find((option) => option.value === selectedData)?.label);
-  }, [selectedData, selectedDuration]);
+  useEffect(()=>{
+    setTime(durationOptions.find(option => option.value === selectedDuration)?.label)
+    setData(dataOptions.find(option => option.value === selectedData)?.label)
+
+  },[selectedData, selectedDuration])
 
   const authenticateUser = async () => {
     setStatus({
@@ -337,12 +347,13 @@ const Home = () => {
       console.log(result);
       if (result.success) {
         setTimeout(() => {
-          updateActiveTab(tab);
-          updateActiveDataplan(data);
-          updateActiveDuration(time);
+          updateActiveTab(tab)
+          updateActiveDataplan(data)
+          updateActiveDuration(time)
           setShowModal(false);
           authenticateUser();
           setProcessingPayment(false);
+        
         }, 3000);
       } else {
         throw new Error("Payment failed or canceled.");
@@ -355,6 +366,9 @@ const Home = () => {
 
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-scroll">
+      {/* Internet Status Icon */}
+      <InternetStatusIcon isOnline={isOnline} />
+
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -383,8 +397,6 @@ const Home = () => {
           <div className="p-6 sm:p-8">
             {/* Header section */}
             <div className="text-center mb-8">
-              {/* Internet Status Icon */}
-              <InternetStatusIcon isOnline={isOnline} />
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                 <Wifi className="w-10 h-10 text-white" />
               </div>
@@ -396,6 +408,7 @@ const Home = () => {
               </p>
             </div>
 
+          
             {/* Tab buttons */}
             <div className="mt-8 flex justify-center gap-4">
               <button
@@ -427,6 +440,7 @@ const Home = () => {
               message={status.message}
               internetAccess={status.internetAccess}
             />
+
 
             {/* Options grid */}
             <div className="mt-8">
@@ -460,6 +474,7 @@ const Home = () => {
         </div>
       </div>
 
+      
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
