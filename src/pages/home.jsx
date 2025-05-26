@@ -64,16 +64,16 @@ const dataOptions = [
 ];
 
 // Internet Status Icon Component
-const InternetStatusIcon = ({ isOnline, internetAccess }) => (
+const InternetStatusIcon = ({ isOnline }) => (
   <div className="fixed top-4 right-4 z-40">
     <div
       className={`flex items-center gap-2 px-3 py-2 rounded-full backdrop-blur-sm border transition-all duration-300 ${
-        isOnline
+       isOnline
           ? "bg-green-500/20 border-green-400/50 text-green-200"
           : "bg-red-500/20 border-red-400/50 text-red-200"
       }`}
     >
-      {internetAccess ? (
+      {isOnline ? (
         <>
           <Wifi className="h-4 w-4" />
           <span className="text-sm font-medium hidden sm:inline">Online</span>
@@ -201,7 +201,6 @@ const Home = () => {
   const [processingPayment, setProcessingPayment] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-
   // Monitor internet connection status
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -385,7 +384,7 @@ const Home = () => {
             {/* Header section */}
             <div className="text-center mb-8">
               {/* Internet Status Icon */}
-              <InternetStatusIcon isOnline={isOnline} internetAccess={status.internetAccess} />
+              <InternetStatusIcon isOnline={isOnline} />
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                 <Wifi className="w-10 h-10 text-white" />
               </div>
