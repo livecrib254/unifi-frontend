@@ -74,12 +74,12 @@ const InternetStatusIcon = ({ isOnline }) => (
       {isOnline ? (
         <>
           <Wifi className="h-4 w-4" />
-          <span className="text-sm font-medium hidden sm:inline">Online</span>
+          <span className="text-sm font-medium ">Online</span>
         </>
       ) : (
         <>
           <WifiOff className="h-4 w-4" />
-          <span className="text-sm font-medium hidden sm:inline">Offline</span>
+          <span className="text-sm font-medium ">Offline</span>
         </>
       )}
     </div>
@@ -367,7 +367,7 @@ const Home = () => {
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-scroll">
       {/* Internet Status Icon */}
-      <InternetStatusIcon isOnline={isOnline} />
+      
 
       {/* Animated background elements */}
       <div className="absolute inset-0">
@@ -397,6 +397,7 @@ const Home = () => {
           <div className="p-6 sm:p-8">
             {/* Header section */}
             <div className="text-center mb-8">
+            <InternetStatusIcon isOnline={isOnline} />
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                 <Wifi className="w-10 h-10 text-white" />
               </div>
