@@ -385,7 +385,7 @@ const Home = () => {
             {/* Header section */}
             <div className="text-center mb-8">
               {/* Internet Status Icon */}
-              <InternetStatusIcon isOnline={isOnline} internetAccess={internetAccess} />
+              <InternetStatusIcon isOnline={isOnline} internetAccess={status.internetAccess} />
               <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                 <Wifi className="w-10 h-10 text-white" />
               </div>
